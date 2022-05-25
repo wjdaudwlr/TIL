@@ -5,7 +5,7 @@
 # All
 
 
-**시퀀스의 모든 요소가 특정 조건에 맞는지 확인한다.**
+**시퀀스(컬렉션) 의 모든 요소가 특정 조건에 맞는지 확인한다.**
 
 ```csharp
 public static bool All<TSource> (this System.Collections.Generic.IEnumerable<TSource>
@@ -53,30 +53,57 @@ public static void AllEx()
 # Any
 
 
-
-**시퀀스에 요소가 하나라도 있는지 확인한다.**
+**시퀀스에 요소가 하나라도 있는지 확인하거나 특정 조건에 맞는 요소가 있는지 확인합니다.**
 
 ```csharp
 public static bool Any<TSource> (this System.Collections.Generic.IEnumerable<TSource> 
 source);
 ```
 
-> 소스 시퀀스에 요소가 하나라도 있으면 `true`를 반환하고 그렇지 않으면 `false`를 반환
+> 소스 시퀀스에 요소가 하나라도 있거나 특정 조건에 맞는 요소가 있으면 `true`를 반환하고 그렇지 않으면 `false`를 반환
 > 
 
 ### 예제코드
 
 ```csharp
-string target = "C# is Programming";
+class Pet
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public bool Vaccinated { get; set; }
+}
 
-if (target.Any(x => Char.IsLower(x)))
-    Console.WriteLine($"문자열 안에 소문자가 포함 되어 있습니다.");
-else
-    Console.WriteLine($"문자열 안에 소문자가 포함되어 있지 않습니다.");
+public static void AnyEx3()
+{
+    // Pet 배열을 만든다.
+    Pet[] pets =
+        { new Pet { Name="Barley", Age=8, Vaccinated=true },
+          new Pet { Name="Boots", Age=4, Vaccinated=false },
+          new Pet { Name="Whiskers", Age=1, Vaccinated=false } };
 
-// 코드 결과 : 
+		// 1살 초과인 애완동물이 예방접종을 맞지 않았는지 확인
+    bool unvaccinated =
+        pets.Any(p => p.Age > 1 && p.Vaccinated == false);
+
+    Console.WriteLine(
+        "There {0} unvaccinated animals over age one.",
+        unvaccinated ? "are" : "are not any");
+}
+
+// 코드결과 : 
 //
-// 문자열 안에 소문자가 포함 되어 있습니다.
+//  There are unvaccinated animals over age one.
 ```
 
-- `target`문자열에 소문자가 하나이상 있기때문에 `true`를 반환한다
+- `pets[1]` 가 `age`가 1보다 크고 `Vaccinated == false`에 만족하기 때문에 `unvaccinated`에 `true` 반환
+
+## 정리
+
+### All
+
+- **시퀀스에 모든요소가 특정 조건에 만족하면 `true` 아니면 `false`**
+
+### Any
+
+- **시퀀스에 요소가 하나라도 있으면 `true` 아니면 `false`**
+- **특정 조건에 맞는 요소가 하나라도 있으면 `true` 아니면 `false`**
